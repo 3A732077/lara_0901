@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Post;
+use http\Env\Request;
+
 class AdminPostsController extends Controller
 {
     public function index()
@@ -11,6 +14,11 @@ class AdminPostsController extends Controller
         return view('admin.posts.index',$data);
     }
 
+    public function store(Request $request)
+    {
+        Post::create($request->all());
+        return redirect()->route('admin.posts.index');
+    }
     public function create()
     {
         return view('admin.posts.create');
@@ -18,7 +26,8 @@ class AdminPostsController extends Controller
 
     public function edit($id)
     {
-        $data = ['id' => $id];
+        $post=Post::find($id);
+        $data = ['post' => $post];
 
         return view('admin.posts.edit', $data);
     }
