@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use http\Env\Request;
+use Illuminate\Http\Request;
 
 class AdminPostsController extends Controller
 {
     public function index()
     {
-        $posts=Post::orderBy('created_at','DESC');
+        $posts=Post::orderBy('created_at','DESC')->get();
         $data=['posts'=>$posts];
         return view('admin.posts.index',$data);
     }
@@ -37,6 +37,12 @@ class AdminPostsController extends Controller
 
         $post->update($request->all());
 
+        return redirect()->route('admin.posts.index');
+    }
+    
+    public function destroy($id)
+    {
+        Post::destroy($id);
         return redirect()->route('admin.posts.index');
     }
 }
